@@ -10,8 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^8.0.0",
-    "koa": "^2.7.0",
-    "koa-bodyparser": "^4.2.1"
+    "@slack/events-api": "^2.2.0",
+    "@slack/interactive-messages": "^1.1.1",
+    "@slack/web-api": "^5.0.1",
+    "dotenv": "^8.0.0"
   }
 }
