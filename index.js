@@ -1,8 +1,7 @@
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
 
-const conf = require('./config')
-
+const conf = require('./config');
 
 const app = new Koa();
 
