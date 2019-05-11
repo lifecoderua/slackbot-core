@@ -8,12 +8,16 @@ const slackEvents = createEventAdapter(process.env.SLACK_SIGNING_SECRET);
 // const { createMessageAdapter } = require('@slack/interactive-messages');
 // const slackInteractions = createMessageAdapter(process.env.SLACK_SIGNING_SECRET);
 
+const { WebClient } = require('@slack/web-api');
+
+const web = new WebClient(process.env.SLACK_TOKEN);
+
 const port = process.env.PORT || 3000;
 
-slackEvents.on('app_mention', (event) => {
+slackEvents.on('app_mention', async (event) => {
   console.log(`Received a message event: user ${event.user} in channel ${event.channel} says ${event.text}`);
+  await postMessage(event.channel, `@${event.user}, I've seen you did \`abcdefg\` last summer!`);
 });
-
 
 // Handle errors (see `errorCodes` export)
 slackEvents.on('error', console.error);
@@ -24,22 +28,7 @@ slackEvents.start(port).then(() => {
   console.log(`server listening on port ${port}`);
 });
 
-console.log('aaaa');
-
-// const { WebClient } = require('@slack/web-api');
-
-// // An access token (from your Slack app or custom integration - xoxp, xoxb)
-// const token = process.env.SLACK_TOKEN;
-
-// const web = new WebClient(token);
-
-// This argument can be a channel ID, a DM ID, a MPDM ID, or a group ID
-// const conversationId = 'C1232456';
-
-// (async () => {
-//   // See: https://api.slack.com/methods/chat.postMessage
-//   const res = await web.chat.postMessage({ channel: conversationId, text: 'Hello there' });
-
-//   // `res` contains information about the posted message
-//   console.log('Message sent: ', res.ts);
-// })();
+async function postMessage(conversationId, message) {
+  const res = await web.chat.postMessage({ channel: conversationId, text: message });
+  console.log('Message sent: ', res.ts);
+}
