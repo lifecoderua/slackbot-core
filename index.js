@@ -5,15 +5,15 @@ const { createEventAdapter } = require('@slack/events-api');
 const slackEvents = createEventAdapter(process.env.SLACK_SIGNING_SECRET);
 
 // Initialize using signing secret from environment variables
-const { createMessageAdapter } = require('@slack/interactive-messages');
-const slackInteractions = createMessageAdapter(process.env.SLACK_SIGNING_SECRET);
+// const { createMessageAdapter } = require('@slack/interactive-messages');
+// const slackInteractions = createMessageAdapter(process.env.SLACK_SIGNING_SECRET);
 
 const port = process.env.PORT || 3000;
 
-// Attach listeners to events by Slack Event "type". See: https://api.slack.com/events/message.im
-slackEvents.on('message', (event) => {
+slackEvents.on('app_mention', (event) => {
   console.log(`Received a message event: user ${event.user} in channel ${event.channel} says ${event.text}`);
 });
+
 
 // Handle errors (see `errorCodes` export)
 slackEvents.on('error', console.error);
@@ -24,13 +24,14 @@ slackEvents.start(port).then(() => {
   console.log(`server listening on port ${port}`);
 });
 
+console.log('aaaa');
 
-const { WebClient } = require('@slack/web-api');
+// const { WebClient } = require('@slack/web-api');
 
-// An access token (from your Slack app or custom integration - xoxp, xoxb)
-const token = process.env.SLACK_TOKEN;
+// // An access token (from your Slack app or custom integration - xoxp, xoxb)
+// const token = process.env.SLACK_TOKEN;
 
-const web = new WebClient(token);
+// const web = new WebClient(token);
 
 // This argument can be a channel ID, a DM ID, a MPDM ID, or a group ID
 // const conversationId = 'C1232456';
