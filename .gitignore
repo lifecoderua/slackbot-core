@@ -1,3 +1,7 @@
+# App
+config/index.js
+
+# === NodeJS Common ===
 # Logs
 logs
 *.log
