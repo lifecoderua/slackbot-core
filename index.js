@@ -1,6 +1,3 @@
-const Koa = require('koa');
-const bodyParser = require('koa-bodyparser');
-
 const conf = require('./config');
 
 // Initialize using signing secret from environment variables
