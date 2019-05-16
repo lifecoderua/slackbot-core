@@ -2,6 +2,8 @@ const { createServer } = require('http');
 
 const conf = require('./config');
 const crazyPayload = require('./app/crazy-payload');
+const clusterManagementPayload = require('./app/cluster-management-config');
+const clusterManagementNotification = require('./app/cluster-management-notification');
 const port = process.env.PORT || 3000;
 
 const { createEventAdapter } = require('@slack/events-api');
@@ -29,13 +31,21 @@ async function postMessage(conversationId, message) {
 }
 
 
-slackInteractions.action({ type: 'button' }, (payload, respond) => {
+slackInteractions.action({ type: 'button' }, async (payload, respond) => {
   console.log('payload', payload);
   // respond after processing
-  respond({ text: 'Processing complete.', replace_original: true });
+  
+  console.log('>>>zzz>>>')
+  response = await handleInteraction(payload);
+  // response = await handleInteraction(payload);
+  console.log('>>>xxx>>>')
+  console.log('>>>aaa>>>', response)
+  respond(response);
+
+  // respond({ text: 'Processing complete.', replace_original: true });
 
   // return for immediate response
-  return { text: 'Processing...' };
+  // return { text: 'Processing...' };
 });
 
  
@@ -49,3 +59,19 @@ createServer(function(request, response){
       console.log('Unexpected input', request.url);
   }
 }).listen(port);
+
+
+async function handleInteraction(payload) {
+  // payload.user.id > 'UFHT37DJN' > who triggered
+  // payload.actions[0].value > '[ClusterManager]SelectCluster'
+  
+  // { text: 'SomeTextHere', ... } if text only is required
+  if (payload.actions[0].value === '[ClusterManager]SelectCluster') {
+    return { blocks: clusterManagementPayload, replace_original: true };
+  }
+
+  if (payload.actions[0].value === '[ClusterManager]ConfigDone') {
+    return { blocks: clusterManagementNotification, replace_original: true };
+  }
+  // return { text: 'Processing complete.', replace_original: true };
+}
