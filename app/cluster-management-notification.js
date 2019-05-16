@@ -3,7 +3,7 @@ module.exports = [
 		"type": "section",
 		"text": {
 			"type": "mrkdwn",
-			"text": "== Cluster Shutdown is Planned ==\nYour cluster **replicantsinc-01.nebula-video** is planned for shutdown in 30 minutes.\nIf you need it please Snooze this notification."
+			"text": "*Cluster Shutdown is Planned*\nYour cluster *replicantsinc-01.nebula-video* is planned for shutdown in 30 minutes.\nIf you need it please Snooze this notification."
 		}
 	},
 	{
@@ -12,16 +12,6 @@ module.exports = [
 	{
 		"type": "actions",
 		"elements": [
-			{
-				"type": "button",
-				"text": {
-					"type": "plain_text",
-					"text": "Delete",
-					"emoji": true
-				},
-				"value": "[ClusterManager]PreventNotifications"
-			},
-
       {
         "type": "static_select",
 				"placeholder": {
@@ -49,6 +39,21 @@ module.exports = [
                     "text": "Tomorrow at 6 PM"
                 },
                 "value": "value-2"
+            },
+            {
+                "text": {
+                    "type": "plain_text",
+                    "text": "1 Week"
+                },
+                "value": "value-3"
+            }
+            ,
+            {
+                "text": {
+                    "type": "plain_text",
+                    "text": "Forever"
+                },
+                "value": "value-4"
             }
         ]
 			},
@@ -57,10 +62,29 @@ module.exports = [
 				"type": "button",
 				"text": {
 					"type": "plain_text",
-					"text": "Manage Clusters",
+					"text": "Delete now",
 					"emoji": true
-				},
-				"value": "[ClusterManager]ConfigDone"
+        },
+        "style": "danger",
+        "confirm": {
+          "title": {
+            "type": "plain_text",
+            "text": "Are you sure?"
+          },
+          "text": {
+              "type": "mrkdwn",
+              "text": "Cluster *replicantsinc-01 would be removed now."
+          },
+          "confirm": {
+              "type": "plain_text",
+              "text": "Do it"
+          },
+          "deny": {
+              "type": "plain_text",
+              "text": "Stop, I've changed my mind!"
+          },
+        },
+				"value": "[ClusterManager]DeleteCluster"
 			},
 		]
 	},

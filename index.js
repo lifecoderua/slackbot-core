@@ -4,6 +4,8 @@ const conf = require('./config');
 const crazyPayload = require('./app/crazy-payload');
 const clusterManagementPayload = require('./app/cluster-management-config');
 const clusterManagementNotification = require('./app/cluster-management-notification');
+const clusterManagementDelete = require('./app/cluster-management-delete');
+
 const port = process.env.PORT || 3000;
 
 const { createEventAdapter } = require('@slack/events-api');
@@ -26,7 +28,7 @@ slackEvents.on('app_mention', async (event) => {
 slackEvents.on('error', console.error);
 
 async function postMessage(conversationId, message) {
-  const res = await web.chat.postMessage({ channel: conversationId, text: message, blocks: crazyPayload });
+  const res = await web.chat.postMessage({ channel: conversationId, /*text: message,*/ blocks: crazyPayload });
   console.log('Message sent: ', res.ts);
 }
 
@@ -68,5 +70,15 @@ async function handleInteraction(payload) {
   if (payload.actions[0].value === '[ClusterManager]ConfigDone') {
     return { blocks: clusterManagementNotification, replace_original: true };
   }
+
+  switch (payload.actions[0].value) {
+    case '[ClusterManager]SelectCluster': 
+      return { blocks: clusterManagementPayload, replace_original: true };
+    case '[ClusterManager]ConfigDone': 
+      return { blocks: clusterManagementPayload, replace_original: true };
+    case '[ClusterManager]DeleteCluster': 
+      return { blocks: clusterManagementDelete, replace_original: true };
+  }
+
   // return { text: 'Processing complete.', replace_original: true };
 }

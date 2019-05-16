@@ -3,7 +3,7 @@ module.exports = [
 		"type": "section",
 		"text": {
 			"type": "mrkdwn",
-			"text": "== Cluster Configuration ==\nNo cluster config found for your team. Please set it up!"
+			"text": "*Cluster Configuration*\nNo cluster config found for your team. Please set it up!"
 		}
 	},
 	{
