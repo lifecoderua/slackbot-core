@@ -30,22 +30,17 @@ async function postMessage(conversationId, message) {
   console.log('Message sent: ', res.ts);
 }
 
-
-slackInteractions.action({ type: 'button' }, async (payload, respond) => {
+slackInteractions.action({}, async (payload, respond) => {
   console.log('payload', payload);
   // respond after processing
   
-  console.log('>>>zzz>>>')
   response = await handleInteraction(payload);
-  // response = await handleInteraction(payload);
-  console.log('>>>xxx>>>')
-  console.log('>>>aaa>>>', response)
-  respond(response);
-
-  // respond({ text: 'Processing complete.', replace_original: true });
+  if (response) { 
+    respond(response);
+  }
 
   // return for immediate response
-  // return { text: 'Processing...' };
+  return { text: 'Processing...' };
 });
 
  
