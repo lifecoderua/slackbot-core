@@ -1,6 +1,12 @@
 const { createServer } = require('http');
 
 const conf = require('./config');
+const AWS = require('aws-sdk');
+
+// may be updated on the fly
+const region = 'us-west-2';
+AWS.config.update({region});
+
 const crazyPayload = require('./app/crazy-payload');
 const clusterManagementPayload = require('./app/cluster-management-config');
 const clusterManagementNotification = require('./app/cluster-management-notification');
@@ -17,7 +23,7 @@ const slackInteractions = createMessageAdapter(process.env.SLACK_SIGNING_SECRET)
 const { WebClient } = require('@slack/web-api');
 const web = new WebClient(process.env.SLACK_TOKEN);
 
-
+const talker = require('./app/talker');
 
 slackEvents.on('app_mention', async (event) => {
   console.log(`Received a message event: user ${event.user} in channel ${event.channel} says ${event.text}`);
@@ -72,6 +78,9 @@ async function handleInteraction(payload) {
   // payload.user.id > 'UFHT37DJN' > who triggered
   // payload.actions[0].value > '[ClusterManager]SelectCluster'
   
+  await talker.broadcastAndExpectResponse(payload);
+  console.log('response caught');
+
   // { text: 'SomeTextHere', ... } if text only is required
   if (payload.actions[0].value === '[ClusterManager]SelectCluster') {
     return { blocks: clusterManagementPayload, replace_original: true };
