@@ -59,6 +59,16 @@ createServer(function(request, response){
 
 
 async function handleInteraction(payload) {
+  // const userInfo = await web.users.info({ user: payload.user.id });
+  // console.log(userInfo);
+  // tz: 'Europe/Helsinki',
+  // tz_label: 'Eastern European Summer Time',
+  // tz_offset: 10800,
+
+  // payload.trigger_id: '627102488930.2536167343.7fa66cdb9989559684d0ecfbde5ef7c3',
+  // >> await for SQS response with this id
+
+
   // payload.user.id > 'UFHT37DJN' > who triggered
   // payload.actions[0].value > '[ClusterManager]SelectCluster'
   
