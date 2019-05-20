@@ -18,28 +18,17 @@ module.exports = [
           "type": "plain_text",
           "text": "Select an item"
         },
-        "options": [
-            {
-                "text": {
-                    "type": "plain_text",
-                    "text": "replicantsinc-01"
-                },
-                "value": "value-0"
-            },
-            {
-                "text": {
-                    "type": "plain_text",
-                    "text": "hkv-white"
-                },
-                "value": "value-1"
-            },
-            {
-                "text": {
-                    "type": "plain_text",
-                    "text": "hkv-silver"
-                },
-                "value": "value-2"
-            }
+        "options": [ 
+          {"text": {"type": "plain_text","text": "novsdeploymentstaging-01.nebula.video"},"value": "[novsdeploymentstaging-01.nebula.video"},
+          {"text": {"type": "plain_text","text": "saas-deployment-staging-test-01.nebula.video"},"value": "[saas-deployment-staging-test-01.nebula.video"},
+          {"text": {"type": "plain_text","text": "vos-deploy-ngde3400-13-01.nebula.video"},"value": "[vos-deploy-ngde3400-13-01.nebula.video"},
+          {"text": {"type": "plain_text","text": "replicants-white-01.nebula.video"},"value": "[replicants-white-01.nebula.video"},
+          {"text": {"type": "plain_text","text": "white-walker-01.nebula.video"},"value": "[white-walker-01.nebula.video"},
+          {"text": {"type": "plain_text","text": "replicantsinc-01.nebula.video"},"value": "[replicantsinc-01.nebula.video"},
+          {"text": {"type": "plain_text","text": "corsica-tm2-01.nebula.video"},"value": "[corsica-tm2-01.nebula.video"},
+          {"text": {"type": "plain_text","text": "hkvpurple-01.nebula.video"},"value": "[hkvpurple-01.nebula.video"},
+          {"text": {"type": "plain_text","text": "2-01.nebula.video"},"value": "[2-01.nebula.video"},
+          {"text": {"type": "plain_text","text": "cduval-01.nebula.video"},"value": "[cduval-01.nebula.video"},
         ]
 			},
 

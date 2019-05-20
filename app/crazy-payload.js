@@ -10,6 +10,16 @@ module.exports = [
 		"type": "divider"
 	},
 	{
+		"type": "section",
+		"text": {
+			"type": "mrkdwn",
+			"text": "*Demo disclaimer:* this bot is functioning in the preview mode, with actual cluster management disabled until proper debugging and logging applied. Stay tuned! ETA: May 27"
+		}
+	},
+	{
+		"type": "divider"
+	},
+	{
 		"type": "actions",
 		"elements": [
 			{
@@ -25,10 +35,10 @@ module.exports = [
 				"type": "button",
 				"text": {
 					"type": "plain_text",
-					"text": "Pair Uplinks",
+					"text": "Discover Uplinks",
 					"emoji": true
 				},
-				"value": "[UplinksManager]SelectCluster"
+				"value": "[UplinksManager]DiscoverUplinks"
 			},
 		]
 	},

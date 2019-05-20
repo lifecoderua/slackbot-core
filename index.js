@@ -78,8 +78,9 @@ async function handleInteraction(payload) {
   // payload.user.id > 'UFHT37DJN' > who triggered
   // payload.actions[0].value > '[ClusterManager]SelectCluster'
   
-  await talker.broadcastAndExpectResponse(payload);
-  console.log('response caught');
+  // TODO: real communications
+  // await talker.broadcastAndExpectResponse(payload);
+  // console.log('response caught');
 
   // { text: 'SomeTextHere', ... } if text only is required
   if (payload.actions[0].value === '[ClusterManager]SelectCluster') {
@@ -97,6 +98,13 @@ async function handleInteraction(payload) {
       return { blocks: clusterManagementPayload, replace_original: true };
     case '[ClusterManager]DeleteCluster': 
       return { blocks: clusterManagementDelete, replace_original: true };
+    case '[UplinksManager]DiscoverUplinks': 
+      return { blocks: require('./app/discover-uplinks'), replace_original: true };
+  }
+
+  console.log('+', payload.actions[0].selected_option.value, payload.actions[0].selected_option.value.contains('[r'))
+  if (payload.actions[0].selected_option && payload.actions[0].selected_option.value.contains('[r')) {
+    return { blocks: clusterManagementDelete, replace_original: true };
   }
 
   // return { text: 'Processing complete.', replace_original: true };
