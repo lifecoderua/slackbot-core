@@ -14,18 +14,15 @@ const params = {
 
 class Talker {
   constructor() {
-    // payload.trigger_id : Promise
     this.expectations = {};
 
     const app = Consumer.create({
       queueUrl: process.env.BOT_INPUT_QUEUE,
       handleMessage: async (messageJSON) => {
-        console.log(messageJSON);
+        console.log('reply caught +');
         try {
           const message = JSON.parse(messageJSON.Body);
-          console.log('EXPECTS', this.expectations);
           const answerFor = this.expectations[message.trigger_id];
-          console.log('MSG FOR:', answerFor);
           if (answerFor) {
             answerFor.resolve(message);
           }
@@ -47,23 +44,18 @@ class Talker {
   }
 
   async broadcastAndExpectResponse(slackInteractionPayload) {
-
-    console.log('********* 0');
     const reply = this.addExpectation(slackInteractionPayload);
-    console.log('********* 1');
 
     try {
-      params.MessageDeduplicationId = slackInteractionPayload.trigger_id + Math.random().toString(),
+      params.MessageDeduplicationId = Date.now().toString() + slackInteractionPayload.trigger_id,
       params.MessageBody = JSON.stringify(slackInteractionPayload);
     } catch(e) {
       console.error('WHOOPS >>>>', e);
     }
     sqs.sendMessage(params, function(err, data) {
       if (err) {
-        console.log('********* 12');
         console.log("Error", err);
       } else {
-        console.log('********* 13');
         console.log("Success", data.MessageId);
       }
     });
@@ -72,18 +64,15 @@ class Talker {
   }
 
   addExpectation(slackInteractionPayload) {
-    console.log('********* 01');
     let resolve;
     const messageResponsePromise = new Promise((resolver) => {
       resolve = resolver;
     });
-    console.log('********* 02');
     this.expectations[slackInteractionPayload.trigger_id] = {
       promise: messageResponsePromise,
       resolve,
     };
 
-    console.log('********* 03');
     return messageResponsePromise;
   }
 

@@ -26,29 +26,28 @@ const web = new WebClient(process.env.SLACK_TOKEN);
 const talker = require('./app/talker');
 
 slackEvents.on('app_mention', async (event) => {
-  console.log(`Received a message event: user ${event.user} in channel ${event.channel} says ${event.text}`);
-  await postMessage(event.channel, `<@${event.user}>, I've seen you did \`abcdefg\` last summer!`);
+  await postMessage(event.channel);
 });
 
 // Handle errors (see `errorCodes` export)
 slackEvents.on('error', console.error);
 
 async function postMessage(conversationId, message) {
-  const res = await web.chat.postMessage({ channel: conversationId, /*text: message,*/ blocks: crazyPayload });
-  console.log('Message sent: ', res.ts);
+  return await web.chat.postMessage({ channel: conversationId, blocks: crazyPayload });
 }
 
 slackInteractions.action({}, async (payload, respond) => {
-  console.log('payload', payload);
+  // console.log('payload', payload);
   // respond after processing
   
   response = await handleInteraction(payload);
   if (response) { 
     respond(response);
   }
+  // handleInteraction(payload).then(response => respond(response))
 
-  // return for immediate response
-  return { text: 'Processing...' };
+  // return for immediate response - doesn't work without `respond()` wrapper - doc bug?
+  // return { text: 'Processing...' };
 });
 
  
@@ -78,10 +77,7 @@ async function handleInteraction(payload) {
   // payload.user.id > 'UFHT37DJN' > who triggered
   // payload.actions[0].value > '[ClusterManager]SelectCluster'
   
-  // TODO: real communications
-  const x = await talker.broadcastAndExpectResponse(payload);
-  console.log('>>>>>>>>>>>>>>>>>>>>>>> response caught', x);
-return x;
+  return await talker.broadcastAndExpectResponse(payload);
   // { text: 'SomeTextHere', ... } if text only is required
   if (payload.actions[0].value === '[ClusterManager]SelectCluster') {
     return { blocks: clusterManagementPayload, replace_original: true };
