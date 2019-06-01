@@ -8,9 +8,6 @@ const region = 'us-west-2';
 AWS.config.update({region});
 
 const crazyPayload = require('./app/crazy-payload');
-const clusterManagementPayload = require('./app/cluster-management-config');
-const clusterManagementNotification = require('./app/cluster-management-notification');
-const clusterManagementDelete = require('./app/cluster-management-delete');
 
 const port = process.env.PORT || 3000;
 
@@ -79,29 +76,7 @@ async function handleInteraction(payload) {
   
   return await talker.broadcastAndExpectResponse(payload);
   // { text: 'SomeTextHere', ... } if text only is required
-  if (payload.actions[0].value === '[ClusterManager]SelectCluster') {
-    return { blocks: clusterManagementPayload, replace_original: true };
-  }
-
-  if (payload.actions[0].value === '[ClusterManager]ConfigDone') {
-    return { blocks: clusterManagementNotification, replace_original: true };
-  }
-
-  switch (payload.actions[0].value) {
-    case '[ClusterManager]SelectCluster': 
-      return { blocks: clusterManagementPayload, replace_original: true };
-    case '[ClusterManager]ConfigDone': 
-      return { blocks: clusterManagementPayload, replace_original: true };
-    case '[ClusterManager]DeleteCluster': 
-      return { blocks: clusterManagementDelete, replace_original: true };
-    case '[UplinksManager]DiscoverUplinks': 
-      return { blocks: require('./app/discover-uplinks'), replace_original: true };
-  }
-
-  console.log('+', payload.actions[0].selected_option.value, payload.actions[0].selected_option.value.contains('[r'))
-  if (payload.actions[0].selected_option && payload.actions[0].selected_option.value.contains('[r')) {
-    return { blocks: clusterManagementDelete, replace_original: true };
-  }
+  
 
   // return { text: 'Processing complete.', replace_original: true };
 }
