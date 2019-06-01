@@ -79,9 +79,9 @@ async function handleInteraction(payload) {
   // payload.actions[0].value > '[ClusterManager]SelectCluster'
   
   // TODO: real communications
-  // await talker.broadcastAndExpectResponse(payload);
-  // console.log('response caught');
-
+  const x = await talker.broadcastAndExpectResponse(payload);
+  console.log('>>>>>>>>>>>>>>>>>>>>>>> response caught', x);
+return x;
   // { text: 'SomeTextHere', ... } if text only is required
   if (payload.actions[0].value === '[ClusterManager]SelectCluster') {
     return { blocks: clusterManagementPayload, replace_original: true };

@@ -53,7 +53,7 @@ class Talker {
     console.log('********* 1');
 
     try {
-      params.MessageDeduplicationId = Math.random().toString(),
+      params.MessageDeduplicationId = slackInteractionPayload.trigger_id + Math.random().toString(),
       params.MessageBody = JSON.stringify(slackInteractionPayload);
     } catch(e) {
       console.error('WHOOPS >>>>', e);
