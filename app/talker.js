@@ -3,6 +3,8 @@ const AWS = require('aws-sdk');
 
 const sqs = new AWS.SQS({apiVersion: '2012-11-05'});
 
+const { WebClient } = require('@slack/web-api');
+const web = new WebClient(process.env.SLACK_TOKEN);
 
 
 const params = {
@@ -22,6 +24,10 @@ class Talker {
         console.log('reply caught +');
         try {
           const message = JSON.parse(messageJSON.Body);
+          if (message.type === 'post') {
+            // {channel: channelId, text:, blocks:,}
+            return await web.chat.postMessage(message.payload);
+          }
           const answerFor = this.expectations[message.trigger_id];
           if (answerFor) {
             answerFor.resolve(message);
